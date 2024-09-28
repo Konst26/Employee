@@ -29,26 +29,23 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee remove(String firstName, String lastName) {
         Employee employee = new Employee(firstName, lastName);
-        if (employees.contains(employee)) {
-            employees.remove(employee);
-            return employee;
+        if (employees.containsKey(employee.getFullName())) {
+            return employees.remove(employee.getFullName());
         }
         throw new EmployeeNotFoundException();
     }
 
-
-
     @Override
     public Employee find(String firstName, String lastName) {
     Employee employee = new Employee(firstName, lastName);
-    if(employees.contains(employee)) {
-        return employee;
+    if(employees.containsKey(employee.getFullName())) {
+        return employees.get(employee.getFullName());
     }
         throw new EmployeeNotFoundException();
     }
 
     @Override
     public Collection<Employee> findAll() {
-        return Collections.unmodifiableList(employees);       //возвращает неизменяемую копию//
+        return Collections.unmodifiableCollection(employees.values());       //возвращает неизменяемую копию//
     }
 }
