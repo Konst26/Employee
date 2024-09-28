@@ -5,35 +5,32 @@ import Book.Employee.EmployeesBook.exception.exception.EmployeeAlreadyAddedExcep
 import Book.Employee.EmployeesBook.model.Employee;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-    private final List<Employee> employeeList;
+    private final Map<String,Employee> employees;
 
     public EmployeeServiceImpl() {
-        this.employeeList = new ArrayList<>() ;
+        this.employees = new HashMap<>();
     }
 
     @Override
     public Employee add(String firstName, String lastName) {
         Employee employee = new Employee(firstName, lastName);
-        if (employeeList.contains(employee)) {
+        if (employees.containsKey(employee.getFullName())) {
             throw new EmployeeAlreadyAddedException();
         }
-        employeeList.add(employee);
+        employees.put(employee.getFullName(), employee);
         return employee;
     }
 
     @Override
     public Employee remove(String firstName, String lastName) {
         Employee employee = new Employee(firstName, lastName);
-        if (employeeList.contains(employee)) {
-            employeeList.remove(employee);
+        if (employees.contains(employee)) {
+            employees.remove(employee);
             return employee;
         }
         throw new EmployeeNotFoundException();
@@ -44,7 +41,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee find(String firstName, String lastName) {
     Employee employee = new Employee(firstName, lastName);
-    if(employeeList.contains(employee)) {
+    if(employees.contains(employee)) {
         return employee;
     }
         throw new EmployeeNotFoundException();
@@ -52,6 +49,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Collection<Employee> findAll() {
-        return Collections.unmodifiableList(employeeList);       //возвращает неизменяемую копию//
+        return Collections.unmodifiableList(employees);       //возвращает неизменяемую копию//
     }
 }
