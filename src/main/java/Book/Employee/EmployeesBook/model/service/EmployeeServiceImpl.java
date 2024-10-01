@@ -10,10 +10,12 @@ import java.util.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-
     private static final int MAX_EMPLOYEES = 8;
-
-    private final List<Employee> employees = new ArrayList<>();
+    private final List<Employee> employees = new ArrayList<>(List.of(
+            new Employee("Ivan", "Ivanov", 1,1000),
+            new Employee("Petr", "Petrov", 2, 1500),
+            new Employee("Dima", "Sidorov", 2, 2000)
+    ));
 
 
     @Override
@@ -29,13 +31,18 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public String remove(String firstName, String lastName) {
-        boolean removed = employees.removeIf(p -> p.getFirstName().equals(firstName) && p.getLastName().equals(lastName));
+    public boolean remove(String firstName, String lastName) {
+        return employees.removeIf(p -> p.getFirstName().equals(firstName) && p.getLastName().equals(lastName));
+    }
+
+
+        /*        boolean removed = employees.removeIf(p -> p.getFirstName().equals(firstName) && p.getLastName().equals(lastName));
         if (removed) {
             return "Сотрудник " + firstName + " " + lastName + "удален.";
         }
         return "Сотрудник " + firstName + " " + lastName + "не найден!";
         }
+        */
 
     @Override
     public Employee find(String firstName, String lastName) {
